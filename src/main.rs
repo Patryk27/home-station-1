@@ -25,7 +25,7 @@ fn main() {
     info!("");
 
     // -- create system -- //
-    info!("[1/2] Creating system...");
+    info!("[1/3] Creating system...");
 
     let system = System::new("home-station");
 
