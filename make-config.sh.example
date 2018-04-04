@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+##
+## This is an example configuration required for the [make.sh] script to work.
+## You should copy it to [make-config.sh] and fill with appropriate values.
+##
+
+# Your Raspberry Pi's host name:
+RPI_HOST='pi'
+
+# Raspberry Pi's SSH user name:
+RPI_USER='pi'
+
+# Raspberry Pi's SSH user password:
+RPI_PASS='pi'
+
+# Executable's target directory:
+RPI_TARGET_DIR="/home/${RPI_USER}"
+
+# Path to the compiled OpenSSL:
+export OPENSSL_DIR=/usr/src/arm/openssl/build

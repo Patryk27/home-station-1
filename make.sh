@@ -1,50 +1,81 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+source make-config.sh
+
+# Include a few color constants
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-RPI_HOST='pi'
-RPI_USER='pi'
-RPI_PASS='pi'
-
+# Set the target
 TARGET='arm-unknown-linux-gnueabi'
 
-export PKG_CONFIG_ALLOW_CROSS=1
-export OPENSSL_DIR=../libs/arm/openssl/_out
+function print_help {
+    echo -e "${GREEN}Usage:${NC}"
+    echo -e "   make.sh action"
+    echo
+    echo -e "${GREEN}Actions:${NC}"
+    echo -e "   -h   print this help"
+    echo -e "   -b   build"
+    echo -e "   -u   upload to remote"
+    echo -e "   -r   run at remote"
+    echo -e "   -f   build, upload & run"
+    echo
+    echo -e "${GREEN}Example:${NC}"
+    echo -e "   make.sh -b -u"
 
-clear
+    exit 0
+}
 
-# -- clean -- #
-echo -e "${YELLOW}Cleaning...${NC}"
+function build {
+    echo -e "${YELLOW}Building...${NC}"
 
-rm -f target/$TARGET/release/home-station
+    cargo build --target=$TARGET --release
 
-# -- build -- #
-echo -e "${YELLOW}Building...${NC}"
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Building failed, aborting.${NC}"
+        exit 1
+    fi
+}
 
-cargo build --target=$TARGET --release
-
-if [ ! -f target/$TARGET/release/home-station ]; then
-	echo -e "${RED}Building failed, aborting.${NC}"
-	exit 1
-fi
-
-# -- deploy -- #
-if [ "$1" == "deploy" ]; then
-    # -- upload -- ##
+function upload {
 	echo -e "${YELLOW}Uploading...${NC}"
 
-	sshpass -p $RPI_PASS rsync -az target/$TARGET/release/home-station "${RPI_USER}@${RPI_HOST}":/home/pi/home-station
+	sshpass -p $RPI_PASS rsync -az target/$TARGET/release/home-station "${RPI_USER}@${RPI_HOST}:${RPI_TARGET_DIR}/home-station"
 
-    if [ "$?" -ne "0" ]; then
+    if [ $? -ne 0 ]; then
         echo -e "${RED}Uploading failed, aborting.${NC}"
-        exit 2
+        exit 1
     fi
+}
 
-    # -- run -- #
+function run {
     echo -e "${YELLOW}Running...${NC}"
 
-    sshpass -p $RPI_PASS ssh -t "${RPI_USER}@${RPI_HOST}" /home/pi/home-station
-fi
+    sshpass -p $RPI_PASS ssh -t "${RPI_USER}@${RPI_HOST}" "${RPI_TARGET_DIR}/home-station"
+}
+
+while getopts "hburf" opt; do
+    case "$opt" in
+    h)
+        print_help
+        exit 0
+        ;;
+
+    b)
+        build
+        ;;
+
+    u)
+        upload
+        ;;
+
+    r)
+        run
+        ;;
+
+    f)
+        build && upload && run
+    esac
+done
