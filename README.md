@@ -53,7 +53,7 @@ on deploying this application frequently.
 
 # Configuring
 
-HomeStation needs a simple configuration to work - you have to create a file `config.hjson` in the application's
+HomeStation needs a simple configuration to work - you have to create a `config.hjson` file in the application's
 directory with following structure:
 
 ```javascript
