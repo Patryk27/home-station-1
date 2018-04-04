@@ -72,22 +72,27 @@ impl super::Component for Component {
 
             // match air quality index
             if let Some(x) = weather.air_quality_index {
-                let str = match x as i32 {
-                    0 ... 25 => ":-)))",
-                    25 ... 50 => ":-)",
-                    50 ... 75 => ":-|",
-                    75 ... 100 => ":-(",
-                    _ => ":-(((",
+                let y = 100 - (x as i32);
+
+                let txt = match y {
+                    0 ... 15 => ":-(((",
+                    15 ... 30 => ":-((",
+                    30 ... 40 => ":-(",
+                    40 ... 60 => ":-|",
+                    60 ... 70 => ":-)",
+                    70 ... 85 => ":-))",
+                    85 ... 100 => ":-)))",
+                    _ => "?",
                 };
 
                 lines.push(
                     // translation: `Overall state: ...`
-                    format!("Ogolny stan: {:.0}", x)
+                    format!("Ogolny stan: {:.0}", y)
                 );
 
                 lines.push(
                     // translation: `Overall state: ...`
-                    format!("Ogolny stan: {}", str)
+                    format!("Ogolny stan: {}", txt)
                 );
             }
         }
