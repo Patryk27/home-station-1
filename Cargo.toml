@@ -7,8 +7,8 @@ authors = ["Patryk Wychowaniec <wychowaniec.patryk@gmail.com>"]
 actix = "0.5"
 chrono = "0.4"
 config = "0.8"
-futures = "*"
+futures = "0.1"
 log = "0.4"
 simple_logger = "0.5"
-pwr_airly = { path = "../pwr_airly" }
-pwr-hd44780 = { path = "../pwr-hd44780" }
+pwr_airly = "0.1"
+pwr-hd44780 = "0.1"
