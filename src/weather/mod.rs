@@ -20,12 +20,18 @@ pub struct Actor {
 
 impl Actor {
     pub fn new(config: Configuration) -> Actor {
+        let mut state = State::default();
+
+        if !config.is_set() {
+            state.status = Status::Disabled;
+        }
+
         let key = config.key.clone();
 
         Actor {
             config,
+            state,
             airly: AirlyClient::new(key),
-            state: State::default(),
         }
     }
 

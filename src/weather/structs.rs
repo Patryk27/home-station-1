@@ -25,6 +25,8 @@ pub struct State {
 
 #[derive(Clone, Debug, Message, PartialEq)]
 pub enum Status {
+    Disabled,
+
     Uninitialized,
     RefreshRequested,
 

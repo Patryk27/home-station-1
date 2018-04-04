@@ -27,7 +27,7 @@ impl super::Component for Component {
 
         // display a vertical line between left & right components
         for y in 0..2 {
-            lcd.print_char_at(y, right::LEFT_PADDING - 1, 0)?;
+            lcd.print_char_at(y, right::INDICATORS_LEFT_PADDING - 1, 0)?;
         }
 
         // display a horizontal line between left+right & bottom components
@@ -36,7 +36,7 @@ impl super::Component for Component {
         }
 
         // display a special, superior character at the connection of both lines
-        lcd.print_char_at(2, right::LEFT_PADDING - 1, 1)?;
+        lcd.print_char_at(2, right::INDICATORS_LEFT_PADDING - 1, 1)?;
 
         Ok(())
     }

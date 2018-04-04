@@ -10,9 +10,12 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use super::State;
 use utils::UnitResult;
+use weather;
 
-// X-coordinate of the
-pub(super) const LEFT_PADDING: usize = 10;
+// X-coordinate of the temperature & pressure indicators
+pub(super) const INDICATORS_LEFT_PADDING: usize = 10;
+
+// X-coordinate of the error icon
 pub(super) const ERROR_LEFT_PADDING: usize = 19;
 
 pub struct Component {
@@ -50,8 +53,13 @@ impl super::Component for Component {
                     weather_updating: _,
                 }
             ) => {
+                // if the weather's been disabled - do not display anything
+                if weather.status == weather::Status::Disabled {
+                    return Ok(());
+                }
+
                 // print temperature, if present
-                lcd.move_at(0, LEFT_PADDING + 1)?;
+                lcd.move_at(0, INDICATORS_LEFT_PADDING + 1)?;
 
                 if let Some(x) = weather.temperature {
                     lcd.print(format!("{:.0} C", x))?;
@@ -60,7 +68,7 @@ impl super::Component for Component {
                 }
 
                 // print pressure, if present
-                lcd.move_at(1, LEFT_PADDING + 1)?;
+                lcd.move_at(1, INDICATORS_LEFT_PADDING + 1)?;
 
                 if let Some(x) = weather.pressure {
                     lcd.print(format!("{:.0} hPa", x / 100.0))?;

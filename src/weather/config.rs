@@ -13,7 +13,12 @@ impl Configuration {
     pub fn new(config: &mut Config) -> Configuration {
         Configuration {
             key: config.get("apis.airly.key").unwrap(),
-            sensor_id: config.get("apis.airly.sensor_id").unwrap(),
+            sensor_id: config.get("apis.airly.sensor_id").unwrap_or(0),
         }
+    }
+
+    /// Returns `true` if configuration's API key has been set.
+    pub fn is_set(&self) -> bool {
+        return self.key.len() > 0;
     }
 }
