@@ -1,11 +1,11 @@
+#![feature(duration_extras)]
+
 /// A weather station, based on Airly.eu.
 ///
 /// # License
 ///
 /// Copyright (c) 2018, Patryk Wychowaniec <wychowaniec.patryk@gmail.com>.
 /// Licensed under the MIT license.
-
-#![feature(duration_extras)]
 
 #[macro_use]
 extern crate actix;
