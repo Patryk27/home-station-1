@@ -56,6 +56,11 @@ function run {
     sshpass -p $RPI_PASS ssh -t "${RPI_USER}@${RPI_HOST}" "${RPI_TARGET_DIR}/home-station"
 }
 
+if [[ $# -eq 0 ]]; then
+    print_help
+    exit 0
+fi
+
 while getopts "hburf" opt; do
     case "$opt" in
     h)
